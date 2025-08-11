@@ -1,0 +1,58 @@
+<!--page heading-->
+<header class="py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center">
+      <h1 class="text-2xl font-semibold">
+        <%= @application.adopter_account.user.first_name %>
+        <%= @application.adopter_account.user.last_name %>'s application for
+        <%= @application.dog.name %>
+      </h1>
+    </div>
+  </div>
+</header>
+
+<!--main section-->
+<section class="pb-16" id="about_us">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-xl mx-auto border border-gray-200 rounded-lg p-8 bg-white shadow-sm">
+      <div class='flex justify-end'>
+        <%= link_to "#{@application.adopter_account.user.first_name}'s Profile",
+            profile_review_path(@application.adopter_account.adopter_profile.id),
+            class: 'no-underline text-[#00401F] hover:text-[#668C78] text-lg font-medium' %>
+      </div>
+
+      <%= form_with model: @application, :url => adopter_application_path do |form| %>
+
+        <div class="mb-4">
+          <%= form.label :status, 'Application status', class: 'block text-lg font-medium text-gray-700 mb-1' %>
+          <%= form.select :status,
+                          AdopterApplication.app_review_statuses,
+                          {},
+                          { class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700 text-lg" } %>
+        </div>
+
+        <div class="mb-4">
+          <%= form.label :notes, class: 'block text-lg font-medium text-gray-700 mb-1' %>
+          <%= form.text_area :notes,
+                  class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700 min-h-28' %>
+        </div>
+
+        <% if @application.profile_show == false %>
+          <div class="mb-4" data-controller='reinstate-explanation'>
+            <div class="flex items-center gap-2">
+              <%= form.label 'Reinstate application:', class: 'text-lg font-medium text-gray-700' %>
+              <%= form.check_box :profile_show, {}, true, false %>
+              <%= image_tag('question.png', height: '20',
+                            data: { action: "click->reinstate-explanation#show",
+                                    reinstate_explanation_target: "icon" },
+                            class: 'ml-2 cursor-pointer cursor-hover') %>
+            </div>
+            <p data-reinstate-explanation-target='text' class='mt-1 text-lg text-gray-700'></p>
+          </div>
+        <% end %>
+
+        <%= form.submit 'Save', class: 'px-6 py-2 border border-gray-700 text-gray-700 rounded-lg hover:bg-gray-700 hover:text-white transition-colors font-medium' %>
+      <% end %>
+    </div>
+  </div>
+</section>

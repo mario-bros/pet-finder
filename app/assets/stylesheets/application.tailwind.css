@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom component styles can go here */
+@layer components {
+  .bigger {
+    font-size: 1.125rem;
+  }
+}
+
+/* Custom fonts */
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,600;1,400&display=swap');
+
+/* Base font family */
+@layer base {
+  body {
+    font-family: 'Titillium Web', sans-serif;
+  }
+}

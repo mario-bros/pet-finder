@@ -1,0 +1,74 @@
+<!--main section-->
+<div class="text-center mb-8">
+  <h1 class="text-3xl font-bold text-indigo-600">🐶 Welcome Back!</h1>
+  <p class="text-gray-500">Sign in to manage your posts and requests.</p>
+</div>
+
+<!--form-->
+<%= form_for(resource, as: resource_name,
+             url: registration_path(resource_name)) do |f| %>
+
+  <%= render "devise/shared/error_messages", resource: resource %>
+
+  <div class="mb-4">
+    <%= f.label :email, 'Email Address', class: 'block text-gray-700 text-sm font-bold mb-2' %>
+    <%= f.email_field :email,
+                      autofocus: true,
+                      required: true,
+                      autocomplete: "email", class: 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :first_name, 'First Name*', class: 'block text-gray-700 text-sm font-bold mb-2' %>
+    <%= f.text_field :first_name, required: true, class: 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :last_name, 'Last Name*', class: 'block text-gray-700 text-sm font-bold mb-2' %>
+    <%= f.text_field :last_name, required: true, class: 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :password, 'Password*', class: 'block text-gray-700 text-sm font-bold mb-2' %>
+    <% if @minimum_password_length %>
+      <em>(<%= @minimum_password_length %> characters minimum)</em>
+    <% end %><br />
+    <%= f.password_field :password,
+                         required: true,
+                         autocomplete: "new-password",
+                         class: 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline' %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :password_confirmation, 'Password Confirmation*' %>
+    <%= f.password_field :password_confirmation,
+                         required: true,
+                         autocomplete: "new-password",
+                         class: 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline' %>
+  </div>
+
+  <div class="mb-6">
+    <%= f.check_box :tos_agreement, required: true,
+                    class: 'me-2' %>
+    <%= f.label :tos_agreement, '*I agree to the' %>
+    <%= link_to 'Terms and Conditions', terms_and_conditions_path,
+                target: '_blank', class: 'text-decoration-none' %>
+    <span>& </span>
+    <%= link_to 'Cookie Policy', cookie_policy_path,
+                target: '_blank', class: 'text-decoration-none' %>
+  </div>
+
+  <div class="flex items-center justify-between">
+    <%= f.submit "Register", class: 'bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full',
+                 data: { turbo: false } %>
+  </div>
+<% end %>
+
+<p class="text-center text-gray-500 text-sm mt-6">
+  Already have an account?
+  <%= link_to 'Login Here', new_user_session_path, class: 'font-bold text-indigo-600 hover:text-indigo-800' %>.
+</p>
+<p class="text-center text-gray-500 text-xs mt-2">
+  <%= link_to 'Back to Home', root_path, class: 'hover:text-indigo-800' %>
+</p>
+<!--form-->

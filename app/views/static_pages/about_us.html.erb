@@ -1,0 +1,45 @@
+<section class="py-16" id="about_us">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 mt-16">
+
+    <!--page heading-->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-bold uppercase underline">
+        About us
+      </h1>
+    </div>
+
+    <!--main section-->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pb-16">
+      <div class="mb-6 md:mb-0">
+        <%= link_to image_tag('about2.png', alt: 'Dog in Mexico', class: 'w-full h-96 object-cover rounded-lg'), 
+            'https://www.google.com/maps/place/La+Ventana,+BCS,+Mexico/@24.0474038,-109.9963759,15z/data=!3m1!4b1!4m5!3m4!1s0x86afc23a777d9521:0x30234a437e68581!8m2!3d24.0464756!4d-109.9943469',
+            target: "_blank" %>
+      </div>
+      <div class="md:pl-4">
+        <p class='text-lg text-justify mb-4'>
+          Baja Pet Rescue was founded by Danielle Gee and an incredible group of ladies in April of 2020. We have primarily focused on rescue efforts, operating as a foster-based program. To date, we have rescued over 300 dogs! In the summer of 2024, we were forced to reevaluate our approach, we realized that we are facing an overpopulation crisis of domestic animals. With the increased difficulty in transporting dogs to the United States, we decided to focus more efforts on spay/neuter and scale back the number of dogs in our foster program.
+        </p>
+        <p class='text-lg text-justify'>
+          We are located in La Ventana, a small fishing village on the shore of La Ventana Bay south of La Paz on the eastern side of the Baja California peninsula. Founded in the early 1940s by the La Paz pearl diver Salome Leon, La Ventana has become a popular destination for tourists and kite surfers. Despite its relatively small size, there are many stray dogs in the surrounding area that need a home. 
+        </p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pb-16">
+      <div class="md:pr-4 pt-6 md:pt-0">
+        <p class='text-lg text-justify mb-4'>
+          Are you ready to add a 4-legged friend to your home? We adopt dogs to people all over western Canada and the US, as well as the Baja Peninsula in Mexico. While we are always open to adopting dogs to the central and eastern parts of Canada and the US, due to the difficulty of transport, we require the adopter to coordinate transport in order to finalize an adoption.
+        </p>
+        <div class='flex flex-col items-center mt-8'>
+          <h3 class='mb-6 mt-4 text-2xl font-bold'>Become an adopter now!</h3>
+          <%= link_to 'Create Account', account_select_path , 
+                      class: 'custom-btn-pink text-center' %>
+        </div>
+      </div>
+      <div class="hidden md:block">
+        <%= image_tag('about2.jpg', alt: 'Dog in Mexico', class: 'w-full h-96 object-cover rounded-lg') %>
+      </div>
+    </div>
+
+  </div>
+</section>

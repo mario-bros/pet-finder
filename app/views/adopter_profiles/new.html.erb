@@ -1,0 +1,28 @@
+<!--page heading-->
+<header class="py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center">
+      <h1 class="text-4xl font-bold uppercase underline">
+        Adopter Profile
+      </h1>
+    </div>
+  </div>
+</header>
+
+<section class="pb-16" id="account_select">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 mt-8">
+
+    <!-- progress bar-->
+    <%= render partial: 'shared/progress_bar', locals: { page: 'profile' } %>
+
+    <h2 class="text-center mb-6 max-w-2xl mx-auto text-lg text-gray-700">
+      The following questions help us learn more about you so we can match you with the right pooch.    
+    </h2>
+
+    <!--rendering _form.html.erb-->
+    <div class="max-w-3xl mx-auto">
+      <%= render "form", profile: @adopter_profile %>
+    </div>
+
+  </div>
+</section>

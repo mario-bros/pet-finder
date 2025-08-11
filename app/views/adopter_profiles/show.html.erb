@@ -1,0 +1,171 @@
+<!--page heading-->
+<header class="py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center">
+      <h1 class="text-4xl font-bold uppercase underline">
+        Adopter Profile
+      </h1>
+    </div>
+  </div>
+</header>
+
+<!--main section-->
+<section class="pb-16" id="adopter_profile">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!--adopter profile card-->
+    <div class="flex">
+      <div class="w-full max-w-5xl mx-auto border border-gray-200 rounded-lg p-8 bg-white shadow-sm">
+        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <h2 class="text-2xl font-bold"><%= current_user.first_name %>'s Profile</h2>
+          <%= link_to 'Edit Profile', edit_profile_path, class: 'border border-gray-700 text-gray-700 hover:bg-gray-700 hover:text-white px-4 py-2 rounded-lg transition-colors' %>
+        </div>
+
+        <!--Administrative Details-->
+        <div class="mt-6">
+          <h4 class="text-xl font-bold mb-4 mt-4">Contact</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-y-3 text-lg">
+            <div class="md:col-span-1"><strong>Phone Number</strong></div>
+            <div class="text-gray-600"><%= @adopter_profile.formatted_phone %></div>
+
+            <div class="md:col-span-1"><strong>Contact Method</strong></div>
+            <div class="text-gray-600"><%= @adopter_profile.contact_method %></div>
+
+            <div class="md:col-span-1"><strong>Country</strong></div>
+            <div class="text-gray-600"><%= @adopter_profile.location.country %></div>
+
+            <div class="md:col-span-1"><strong>Province/State</strong></div>
+            <div class="text-gray-600"><%= @adopter_profile.location.province_state %></div>
+
+            <div class="md:col-span-1"><strong>City/Town</strong></div>
+            <div class="text-gray-600 mb-2"><%= @adopter_profile.location.city_town %></div>
+          </div>
+        </div>
+
+        <!--Your Lifestyle-->
+        <div class="mt-8">
+          <hr class="my-6">
+          <h4 class="text-xl font-bold mb-4">Lifestyle</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-y-3 text-lg">
+            <div><strong>Your ideal dog</strong></div>
+            <div class="text-gray-600"><%= @adopter_profile.ideal_dog %></div>
+
+            <div><strong>Your lifestyle</strong></div>
+            <div class="text-gray-600"><%= @adopter_profile.lifestyle_fit %></div>
+
+            <div><strong>Activities you will do with your dog</strong></div>
+            <div class="text-gray-600"><%= @adopter_profile.activities %></div>
+
+            <div><strong>Hours dog will be alone on weekends</strong></div>
+            <div class="text-gray-600"><%= @adopter_profile.alone_weekend %></div>
+
+            <div><strong>Hours dog will be alone on week days</strong></div>
+            <div class="text-gray-600 mb-2"><%= @adopter_profile.alone_weekday %></div>
+          </div>
+        </div>
+
+        <!--Dog Care-->
+        <div class="mt-8">
+          <hr class="my-6">
+          <h4 class="text-xl font-bold mb-4">Dog Care</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-y-3 text-lg">
+            <div><strong>Your dog care experience</strong></div>
+            <div class="text-gray-600"><%= @adopter_profile.experience %></div>
+
+            <div><strong>Dog care plans during emergency or vacation</strong></div>
+            <div class="text-gray-600"><%= @adopter_profile.contingency_plan %></div>
+
+            <div><strong>Will dog care be shared with someone outside household?</strong></div>
+            <div class="text-gray-600"><%= @adopter_profile.shared_ownership ? 'Yes' : 'No' %></div>
+
+            <% unless @adopter_profile.shared_ownership == false %>
+              <div><strong>Details on shared dog care</strong></div>
+              <div class="text-gray-600 mb-2"><%= @adopter_profile.shared_owner %></div>
+            <% end %>
+          </div>
+        </div>
+
+        <!--Household Information-->
+        <div class="mt-8">
+          <hr class="my-6">
+          <h4 class="text-xl font-bold mb-4">Household</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-y-3 text-lg">
+            <div><strong>Housing type</strong></div>
+            <div class="text-gray-600"><%= @adopter_profile.housing_type %></div>
+
+            <div><strong>Do you have access to a fenced garden?</strong></div>
+            <div class="text-gray-600"><%= @adopter_profile.fenced_access ? 'Yes' : 'No' %></div>
+
+            <% unless @adopter_profile.fenced_access == true %>
+              <div><strong>Your plan to care for the dog without a fenced garden</strong></div>
+              <div class="text-gray-600"><%= @adopter_profile.fenced_alternative %></div>
+            <% end %>
+
+            <div><strong>Dog's location during the day</strong></div>
+            <div class="text-gray-600"><%= @adopter_profile.location_day %></div>
+
+            <div><strong>Dog's location at night</strong></div>
+            <div class="text-gray-600"><%= @adopter_profile.location_night %></div>
+
+            <div><strong>Do you rent your home or live on a strata property?</strong></div>
+            <div class="text-gray-600"><%= @adopter_profile.do_you_rent ? 'Yes' : 'No' %></div>
+
+            <% unless @adopter_profile.do_you_rent == false %>
+              <div><strong>Have you confirmed dogs are allowed on the property?</strong></div>
+              <div class="text-gray-600"><%= @adopter_profile.dogs_allowed ? 'Yes' : 'No' %></div>
+            <% end %>
+
+            <div><strong>Number of adults in home (over 18)</strong></div>
+            <div class="text-gray-600"><%= @adopter_profile.adults_in_home %></div>
+
+            <div><strong>Number of children in home (under 18)</strong></div>
+            <div class="text-gray-600"><%= @adopter_profile.kids_in_home.zero? ? 'None' : @adopter_profile.kids_in_home %></div>
+
+            <div><strong>Do you have pets in your home?</strong></div>
+            <div class="text-gray-600"><%= @adopter_profile.other_pets ? 'Yes' : 'No' %></div>
+
+            <% unless @adopter_profile.other_pets == false %>
+              <div><strong>Description of pets</strong></div>
+              <div class="text-gray-600 whitespace-pre-line"><%= @adopter_profile.describe_pets %></div>
+            <% end %>
+          </div>
+        </div>
+
+        <!--Additional Information-->
+        <div class="mt-8">
+          <hr class="my-6">
+          <h4 class="text-xl font-bold mb-4">Additional Details</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-y-3 text-lg">
+            <div><strong>Have you checked your local shelter for adoptable dogs?</strong></div>
+            <div class="text-gray-600"><%= current_user.adopter_account.adopter_profile.checked_shelter ? 'Yes' : 'No' %></div>
+
+            <div><strong>Have you ever had to surrender a pet?</strong></div>
+            <div class="text-gray-600"><%= current_user.adopter_account.adopter_profile.surrendered_pet ? 'Yes' : 'No' %></div>
+
+            <% unless current_user.adopter_account.adopter_profile.surrendered_pet == false %>
+              <div><strong>Details on surrendering the pet</strong></div>
+              <div class="text-gray-600"><%= current_user.adopter_account.adopter_profile.describe_surrender %></div>
+            <% end %>
+
+            <div><strong>Your annual cost estimate for dog care</strong></div>
+            <div class="text-gray-600"><%= current_user.adopter_account.adopter_profile.annual_cost %></div>
+
+            <div><strong>Will you or a friend be in La Ventana in person to pick up the dog?</strong></div>
+            <div class="text-gray-600"><%= current_user.adopter_account.adopter_profile.visit_laventana ? 'Yes' : 'No' %></div>
+
+            <% unless current_user.adopter_account.adopter_profile.visit_laventana == false %>
+              <div><strong>What dates will you be in La Ventana?</strong></div>
+              <div class="text-gray-600"><%= current_user.adopter_account.adopter_profile.visit_dates %></div>
+            <% end %>
+
+            <div><strong>How did you find out about Baja Pet Rescue?</strong></div>
+            <div class="text-gray-600"><%= current_user.adopter_account.adopter_profile.referral_source %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+

@@ -1,0 +1,86 @@
+<!--page heading-->
+<header class="py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h1 class="text-4xl font-bold uppercase underline">
+          Adoption Applications
+        </h1>
+      </div>
+  </div>
+</header>
+
+<section class="pb-16" id="adopter_profile">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <% if @applications.empty? %>
+      <p class='text-center text-lg text-gray-600'>Your adoption applications will be listed here.</p>
+    <% else %>
+      <div class="space-y-6">
+        <% @applications.each do | app | %>
+          <% unless app.profile_show == false %>
+            <div class="border border-gray-200 rounded-lg p-6 bg-white shadow-sm">
+              <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-center">
+                <div class="flex justify-center items-center">
+                  <% if app.dog.images.attached? %>
+                    <%= link_to adoptable_dog_path(app.dog.id) do %>
+                      <%= image_tag app.dog.images.first, class: 'w-36 h-36 object-cover rounded-lg hover:shadow-md transition-shadow' %>
+                    <% end %>
+                  <% else %>
+                    <%= link_to adoptable_dog_path(app.dog.id) do %>
+                      <%= image_tag('coming_soon.jpg', class: 'w-36 h-36 object-cover rounded-lg hover:shadow-md transition-shadow') %>
+                    <% end %>
+                  <% end %>
+                </div>
+
+                <div class="flex justify-center items-center text-center md:text-left">
+                  <h3 class="text-2xl font-bold text-gray-900"><%= app.dog.name %></h3>
+                </div>
+
+                <div class="flex justify-center items-center">
+                  <div class="text-center">
+                    <p class="font-bold text-lg mb-2">Status: <%= app.status.titleize %></p>
+
+                    <% if app.status == 'awaiting_review' %>
+                      <p class="text-gray-600">We will be in contact shortly.</p>
+                    <% elsif app.status == 'under_review' %>
+                      <p class="text-gray-600">Keep an eye on your
+                        <%=current_user.adopter_account.adopter_profile.contact_method %>
+                      </p>
+                    <% elsif app.status == 'adoption_pending' %>
+                      <p class="text-gray-600">This pooch is almost adopted!</p>
+                    <% elsif app.status == 'adoption_made' %>
+                      <p class="text-gray-600">This pooch has found a home!</p>
+                    <% elsif app.status == 'withdrawn' %>
+                      <p class="text-gray-600">If you withdrew by accident, <%= link_to 'contact us', contacts_path, class: 'text-[#00401F] hover:text-[#668C78] underline' %></p>
+                    <% end %>
+                  </div>
+                </div>
+
+                <div class="flex justify-center items-center">
+                  <% unless app.status == 'withdrawn' || app.status == 'adoption_made' %>
+                    <!--withdraw button-->
+                    <%= button_to 'Withdraw',
+                                my_application_path(application: { id: app.id,
+                                                                   status: 'withdrawn' }),
+                                data: { turbo: "false" },
+                                method: 'patch',
+                                class: 'px-6 py-2 border border-gray-600 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors font-medium' %>
+                  <% end %>
+
+                  <% if app.status == 'withdrawn' || app.status == 'adoption_made' %>
+                    <!--remove button-->
+                    <%= button_to 'Remove',
+                                my_application_path(application: { id: app.id,
+                                                                        profile_show: false }),
+                                data: { turbo: 'false' },
+                                method: 'patch',
+                                class: 'px-6 py-2 border border-gray-600 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors font-medium' %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</section>

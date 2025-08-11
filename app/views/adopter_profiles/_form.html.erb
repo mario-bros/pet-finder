@@ -1,0 +1,533 @@
+
+  <%= form_with model: profile, :url => profile_path do |form| %>
+  <%= form.hidden_field :adopter_account_id, value: current_user.adopter_account.id %>
+
+  <% if profile.errors.count > 0 %>
+    <div class="mt-2 border border-red-200 bg-red-50 text-red-800 rounded px-4 py-3" role="alert">
+      <p>Please fix the errors highlighted below.</p>
+    </div>
+  <% end %>
+
+  <!--Administrative details section-->
+  <div class="border border-gray-200 p-8 mb-8 rounded-lg bg-white shadow-sm">
+    <h3 class="text-2xl font-bold mb-6">Contact</h3>
+
+    <div class="mb-6">
+      <%= form.label :phone_number, class: 'block text-lg font-medium text-gray-700 mb-1' %>
+      <%= form.telephone_field :phone_number,
+                              autofocus: true,
+                              placeholder: "10 digit number",
+                              class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700' %>
+
+      <% profile.errors.full_messages_for(:phone_number).each do |message| %>
+        <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= message %></div>
+      <% end %>
+    </div>
+
+    <div class="mb-6">
+      <%= form.label :contact_method, 'Preferred contact method', class: 'block text-lg font-medium text-gray-700 mb-1' %>
+      <%= form.select :contact_method,
+                      ['Phone', 'Email', 'WhatsApp'],
+                      { prompt: "Please select" },
+                      class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700 text-lg' %>
+
+      <% profile.errors.full_messages_for(:contact_method).each do |message| %>
+        <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= message %></div>
+      <% end %>
+    </div>
+
+    <%# nested form for locations table %>
+    <div class="mb-6">
+      <%= form.fields_for :location do |location| %>
+          <%= location.label :country, class: 'block text-lg font-medium text-gray-700 mb-1' %>
+          <%= location.text_field :country, class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700' %>
+          <% profile.location.custom_messages(:country).each do |error| %>
+            <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+          <% end %>
+
+          <%= location.label :province_state, 'Province/State', class: 'block text-lg font-medium text-gray-700 mt-4 mb-1' %>
+          <%= location.text_field :province_state, class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700' %>
+          <% profile.location.custom_messages(:province_state).each do |error| %>
+            <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+          <% end %>
+
+          <%= location.label :city_town, 'City/Town', class: 'block text-lg font-medium text-gray-700 mt-4 mb-1' %>
+          <%= location.text_field :city_town, class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700' %>
+          <% profile.location.custom_messages(:city_town).each do |error| %>
+            <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+          <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <!--Lifestyle section-->
+  <div class="border border-gray-200 p-8 mb-8 rounded-lg bg-white shadow-sm">
+    <h4 class="text-xl font-bold mb-6">Lifestyle</h4>
+
+    <div class="mb-6" data-controller='counter'>
+      <%= form.label :ideal_dog, 'Briefly describe your ideal dog', class: 'block text-lg font-medium text-gray-700 mb-1' %>
+      <%= form.text_area :ideal_dog,
+                        data: { action: "input->counter#countMedium",
+                                counter_target: 'input' },
+                        placeholder: 'E.g. size, energy level, temperament',
+                        class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700 min-h-28' %>
+
+      <div data-counter-target='output' class='text-sm text-gray-500 flex flex-row-reverse'></div>
+
+      <% profile.custom_messages(:ideal_dog).each do |error| %>
+        <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+      <% end %>
+    </div>
+
+    <div class="mb-6" data-controller='counter'>
+      <%= form.label :lifestyle_fit, 'Briefly describe your lifestyle', class: 'block text-lg font-medium text-gray-700 mb-1' %>
+      <%= form.text_area :lifestyle_fit,
+                        data: { action: "input->counter#countMedium",
+                                counter_target: 'input' },
+                        placeholder: 'E.g. weekday routine, weekend routine',
+                        class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700 min-h-28' %>
+
+      <div data-counter-target='output' class='text-sm text-gray-500 flex flex-row-reverse'></div>
+
+      <% profile.custom_messages(:lifestyle_fit).each do |error| %>
+        <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+      <% end %>
+    </div>
+
+    <div class="mb-6" data-controller='counter'>
+      <%= form.label :activities,
+          'Briefly describe activities you will do with your dog', class: 'block text-lg font-medium text-gray-700 mb-1' %>
+      <%= form.text_area :activities,
+                        data: { action: "input->counter#countMedium",
+                                counter_target: 'input' },
+                        placeholder: 'E.g. daily walks, hiking, running, dog park etc.',
+                        class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700 min-h-28' %>
+
+      <div data-counter-target='output' class='text-sm text-gray-500 flex flex-row-reverse'></div>
+
+      <% profile.custom_messages(:activities).each do |error| %>
+        <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+      <% end %>
+    </div>
+
+    <div class="mb-6">
+      <p class="text-lg font-medium text-gray-700 mb-3">Approximately how many hours will your dog be left alone on a typical:</p>
+
+      <div class="flex gap-4 flex-wrap">
+        <div>
+          <%= form.label :alone_weekday, 'Week day', class: 'block text-lg font-medium text-gray-700 mb-1' %>
+          <%= form.select :alone_weekday,
+                          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                          { prompt: "Please select" },
+                          class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700 text-lg' %>
+
+          <% profile.custom_messages(:alone_weekday).each do |error| %>
+            <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+          <% end %>
+        </div>
+
+        <div>
+          <%= form.label :alone_weekend, 'Weekend', class: 'block text-lg font-medium text-gray-700 mb-1' %>
+          <%= form.select :alone_weekend,
+                          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                          { prompt: "Please select" },
+                          class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700 text-lg' %>
+
+          <% profile.custom_messages(:alone_weekend).each do |error| %>
+            <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Dog care section-->
+  <div class="border border-gray-200 p-8 mb-8 rounded-lg bg-white shadow-sm">
+    <h4 class="text-xl font-bold mb-6">Dog Care</h4>
+
+    <div class="mb-6" data-controller='counter'>
+      <%= form.label :experience,
+          'Briefly describe your dog care experience', class: 'block text-lg font-medium text-gray-700 mb-1' %>
+      <%= form.text_area :experience,
+                        data: { action: "input->counter#countMedium",
+                                counter_target: 'input' },
+                        placeholder: 'E.g. role in past dog ownership, if any.',
+                        class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700 min-h-28' %>
+
+      <div data-counter-target='output' class='text-sm text-gray-500 flex flex-row-reverse'></div>
+
+      <% profile.custom_messages(:experience).each do |error| %>
+        <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+      <% end %>
+    </div>
+
+    <div class="mb-6" data-controller='counter'>
+      <%= form.label :contingency_plan,
+          'Who will care for your dog during emergencies or vacations?', class: 'block text-lg font-medium text-gray-700 mb-1' %>
+      <%= form.text_area :contingency_plan,
+                        data: { action: "input->counter#countMedium",
+                                counter_target: 'input' },
+                        class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700 min-h-28' %>
+
+      <div data-counter-target='output' class='text-sm text-gray-500 flex flex-row-reverse'></div>
+
+      <% profile.custom_messages(:contingency_plan).each do |error| %>
+        <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+      <% end %>
+    </div>
+
+    <div class="mb-6">
+      <div data-controller='display'>
+        <p class='text-lg font-medium text-gray-700 mb-3'>
+          Will dog ownership be regularly shared with anyone outside the household?
+        </p>
+
+        <div data-display-target='checked' class="space-x-3">
+          <%= form.label :shared_ownership, 'Yes', value: 'true', class: 'text-lg font-medium text-gray-700' %>
+          <%= form.radio_button :shared_ownership,
+                                true,
+                                data: { action: "input->display#show" } %>
+          <%= form.label :shared_ownership, 'No', value: 'false', class: 'ml-3 text-lg font-medium text-gray-700' %>
+          <%= form.radio_button :shared_ownership,
+                                false,
+                                data: { action: "input->display#hide" } %>
+        </div>
+
+        <% profile.custom_messages(:shared_ownership).each do |error| %>
+          <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+        <% end %>
+
+        <div data-display-target='additional' class='hidden' data-controller='counter'>
+          <%= form.label :shared_owner,
+              'Briefly describe who else will share dog ownership', class: 'block text-lg font-medium text-gray-700 mt-4 mb-1' %>
+          <%= form.text_area :shared_owner,
+                            data: { action: "input->counter#countMedium",
+                                    counter_target: 'input' },
+                            placeholder: 'E.g. how often, their experience with dogs.',
+                            class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700 min-h-28' %>
+
+          <div data-counter-target='output' class='text-sm text-gray-500 flex flex-row-reverse'></div>
+        </div>
+
+        <% profile.custom_messages(:shared_owner).each do |error| %>
+          <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+        <% end %>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!--Household information section-->
+  <div class="border border-gray-200 p-8 mb-8 rounded-lg bg-white shadow-sm">
+    <h4 class="text-xl font-bold mb-6">Household</h4>
+
+    <div class="mb-6">
+      <%= form.label :housing_type, class: 'block text-lg font-medium text-gray-700 mb-1'%>
+      <%= form.select :housing_type,
+                      ['Acreage',
+                      'Detached',
+                      'Duplex',
+                      'Apartment',
+                      'Trailer'],
+                      { prompt: "Please select" },
+                      class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700 text-lg' %>
+
+      <% profile.errors.full_messages_for(:housing_type).each do |message| %>
+        <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= message %></div>
+      <% end %>
+    </div>
+
+    <div class="mb-6">
+      <div data-controller='display'>
+        <p class='text-lg font-medium text-gray-700 mb-3'>
+          Will the dog have access to a fenced yard?
+        </p>
+
+        <div data-display-target='checked' class="space-x-3">
+          <%= form.label :fenced_access, 'Yes', value: 'true', class: 'text-lg font-medium text-gray-700' %>
+          <%= form.radio_button :fenced_access,
+                                true,
+                                data: { action: "input->display#hide" } %>
+          <%= form.label :fenced_access, 'No', value: 'false', class: 'ml-3 text-lg font-medium text-gray-700' %>
+          <%= form.radio_button :fenced_access,
+                                false,
+                                data: { action: "input->display#show" } %>
+        </div>
+
+        <% profile.custom_messages(:fenced_access).each do |error| %>
+          <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+        <% end %>
+
+        <div data-display-target='additional' class='hidden' data-controller='counter'>
+          <%= form.label :fenced_alternative,
+              'How do you plan to care for the dog without a fenced garden?', class: 'block text-lg font-medium text-gray-700 mt-4 mb-1' %>
+          <%= form.text_area :fenced_alternative,
+                            data: { action: "input->counter#countMedium",
+                                    counter_target: 'input' },
+                            placeholder: 'E.g. mainly indoors, outdoors on tether.',
+                            class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700 min-h-28' %>
+
+          <div data-counter-target='output' class='text-sm text-gray-500 flex flex-row-reverse'></div>
+        </div>
+
+        <% profile.custom_messages(:fenced_alternative).each do |error| %>
+          <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <div>
+        <p class='text-lg font-medium text-gray-700 mb-3'>
+          Where on the property will the dog stay during the:
+        </p>
+          <%= form.label :location_day, 'Day', class: 'block text-lg font-medium text-gray-700 mb-1' %>
+          <%= form.text_field :location_day,
+                              placeholder: 'E.g. indoors, outdoors',
+                              class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700' %>
+          <%= form.label :location_night, 'Night', class: 'block text-lg font-medium text-gray-700 mt-4 mb-1' %>
+          <%= form.text_field :location_night,
+                              placeholder: 'E.g. crate, kennel',
+                              class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700' %>
+      </div>
+
+      <% profile.custom_messages(:location_day).each do |error| %>
+        <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+      <% end %>
+
+      <% profile.custom_messages(:location_night).each do |error| %>
+        <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+      <% end %>
+    </div>
+
+    <div class="mb-6">
+      <div data-controller='display'>
+        <p class='text-lg font-medium text-gray-700 mb-3'>
+          Do you rent your home or live in a strata complex?
+        </p>
+
+        <div data-display-target='checked' class="space-x-3">
+          <%= form.label :do_you_rent, 'Yes', value: 'true', class: 'text-lg font-medium text-gray-700' %>
+          <%= form.radio_button :do_you_rent,
+                                true,
+                                data: { action: "input->display#show" } %>
+          <%= form.label :do_you_rent, 'No', value: 'false', class: 'ml-3 text-lg font-medium text-gray-700' %>
+          <%= form.radio_button :do_you_rent,
+                                false,
+                                data: { action: "input->display#hide" } %>
+        </div>
+
+        <% profile.custom_messages(:do_you_rent).each do |error| %>
+          <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+        <% end %>
+
+        <div data-display-target='additional' class='hidden'>
+          <p class='text-lg font-medium text-gray-700 mt-4 mb-2'>
+            Have you confirmed pets are allowed?
+          </p>
+          <%= form.label :dogs_allowed, 'Yes', value: 'true', class: 'text-lg font-medium text-gray-700' %>
+          <%= form.radio_button :dogs_allowed, true %>
+          <%= form.label :dogs_allowed, 'No', value: 'false', class: 'ml-3 text-lg font-medium text-gray-700' %>
+          <%= form.radio_button :dogs_allowed, false %>
+        </div>
+
+        <% profile.custom_messages(:dogs_allowed).each do |error| %>
+          <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <p class='text-lg font-medium text-gray-700 mb-3'>
+        How many people in your home are:
+      </p>
+
+      <div class="flex gap-4 flex-wrap">
+        <div>
+          <%= form.label :adults_in_home, 'Over 18', class: 'block text-lg font-medium text-gray-700 mb-1' %>
+          <%= form.select :adults_in_home,
+                          [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                          { prompt: "Please select" },
+                          class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700 text-lg' %>
+
+          <% profile.errors.full_messages_for(:adults_in_home).each do |message| %>
+            <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= message %></div>
+          <% end %>
+        </div>
+
+        <div>
+          <%= form.label :kids_in_home, 'Under 18', class: 'block text-lg font-medium text-gray-700 mb-1' %>
+          <%= form.select :kids_in_home,
+                          [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                          { prompt: "Please select" },
+                          class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700 text-lg' %>
+
+          <% profile.errors.full_messages_for(:kids_in_home).each do |message| %>
+            <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= message %></div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <div data-controller='display'>
+        <p class='text-lg font-medium text-gray-700 mb-3'>
+          Are there any other pets in your home?
+        </p>
+
+        <div data-display-target='checked' class="space-x-3">
+          <%= form.label :other_pets, 'Yes', value: 'true', class: 'text-lg font-medium text-gray-700' %>
+          <%= form.radio_button :other_pets,
+                                true,
+                                data: { action: "input->display#show" } %>
+          <%= form.label :other_pets, 'No', value: 'false', class: 'ml-3 text-lg font-medium text-gray-700' %>
+          <%= form.radio_button :other_pets,
+                                false,
+                                data: { action: "input->display#hide" } %>
+        </div>
+
+        <% profile.custom_messages(:other_pets).each do |error| %>
+          <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+        <% end %>
+
+        <div data-display-target='additional' class='hidden' data-controller='counter'>
+          <%= form.label :describe_pets,
+              'List pets (include neuter status if dog)', class: 'block text-lg font-medium text-gray-700 mt-4 mb-1' %>
+          <%= form.text_area :describe_pets, data: { action: "input->counter#countMedium",
+                                                    counter_target: 'input' },
+                            class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700 min-h-28' %>
+
+          <div data-counter-target='output' class='text-sm text-gray-500 flex flex-row-reverse'></div>
+        </div>
+
+        <% profile.custom_messages(:describe_pets).each do |error| %>
+          <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+        <% end %>
+      </div>
+    </div>
+
+  </div>
+
+  <!--Additional information section-->
+  <div class="border border-gray-200 p-8 mb-8 rounded-lg bg-white shadow-sm">
+    <h4 class="text-xl font-bold mb-6">Additional Details</h4>
+
+    <div class="mb-6">
+      <div>
+        <p class='text-lg font-medium text-gray-700 mb-2'>
+          Have you checked your local shelter for available dogs?
+        </p>
+        <%= form.label :checked_shelter, 'Yes', value: 'true', class: 'text-lg font-medium text-gray-700' %>
+        <%= form.radio_button :checked_shelter, true %>
+        <%= form.label :checked_shelter, 'No', value: 'false', class: 'ml-3 text-lg font-medium text-gray-700' %>
+        <%= form.radio_button :checked_shelter, false %>
+      </div>
+
+      <% profile.custom_messages(:checked_shelter).each do |error| %>
+        <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+      <% end %>
+    </div>
+
+    <div class="mb-6">
+      <div data-controller='display'>
+        <p class='text-lg font-medium text-gray-700 mb-2'>
+          Have you ever had to surrender or rehome an animal?
+        </p>
+
+        <div data-display-target='checked' class="space-x-3">
+          <%= form.label :surrendered_pet, 'Yes', value: 'true', class: 'text-lg font-medium text-gray-700' %>
+          <%= form.radio_button :surrendered_pet,
+                                true,
+                                data: { action: "input->display#show" } %>
+          <%= form.label :surrendered_pet, 'No', value: 'false', class: 'ml-3 text-lg font-medium text-gray-700' %>
+          <%= form.radio_button :surrendered_pet,
+                                false,
+                                data: { action: "input->display#hide" } %>
+        </div>
+
+        <% profile.custom_messages(:surrendered_pet).each do |error| %>
+          <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+        <% end %>
+
+        <div data-display-target='additional' class='hidden' data-controller='counter'>
+          <%= form.label :describe_surrender,
+              'Briefly describe the circumstances around surrenderring or rehoming the pet', class: 'block text-lg font-medium text-gray-700 mt-4 mb-1' %>
+          <%= form.text_area :describe_surrender, data: { action: "input->counter#countMedium",
+                                                          counter_target: 'input' },
+                                                  class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700 min-h-28' %>
+
+          <div data-counter-target='output' class='text-sm text-gray-500 flex flex-row-reverse'></div>
+        </div>
+
+        <% profile.custom_messages(:describe_surrender).each do |error| %>
+          <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <%= form.label :annual_cost,
+          'How much do you think it will cost to own a dog each year?', class: 'block text-lg font-medium text-gray-700 mb-1' %>
+      <%= form.text_field :annual_cost,
+                          placeholder: '$',
+                          class: 'mt-1 block w-40 rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700' %>
+
+      <% profile.custom_messages(:annual_cost).each do |error| %>
+        <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+      <% end %>
+    </div>
+
+    <div class="mb-6" data-controller='display'>
+      <p class='text-lg font-medium text-gray-700 mb-2'>
+        Will you or a friend be in La Ventana in person to pick up the dog?
+      </p>
+
+      <div data-display-target='checked' class="space-x-3">
+        <%= form.label :visit_laventana, 'Yes', value: 'true', class: 'text-lg font-medium text-gray-700' %>
+        <%= form.radio_button :visit_laventana,
+                              true,
+                              data: { action: "input->display#show" } %>
+        <%= form.label :visit_laventana, 'No', value: 'false', class: 'ml-3 text-lg font-medium text-gray-700' %>
+        <%= form.radio_button :visit_laventana,
+                              false,
+                              data: { action: "input->display#hide" } %>
+      </div>
+
+      <% profile.custom_messages(:visit_laventana).each do |error| %>
+        <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+      <% end %>
+
+      <div data-display-target='additional' class='hidden' data-controller='counter'>
+        <%= form.label :visit_dates,
+            'What dates will you be in La Ventana?', class: 'block text-lg font-medium text-gray-700 mt-4 mb-1' %>
+        <%= form.text_field :visit_dates, class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700' %>
+
+        <div data-counter-target='output' class='text-sm text-gray-500 flex flex-row-reverse'></div>
+      </div>
+
+      <% profile.custom_messages(:visit_dates).each do |error| %>
+        <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+      <% end %>
+    </div>
+
+    <div class="mb-6">
+      <%= form.label :referral_source,
+          'How did you find out about Baja Pet Rescue?', class: 'block text-lg font-medium text-gray-700 mb-1' %>
+      <%= form.text_field :referral_source, class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-700 focus:ring-emerald-700' %>
+
+      <% profile.custom_messages(:referral_source).each do |error| %>
+        <div class="mt-1 border border-red-200 bg-red-50 text-red-800 rounded px-3 py-2 text-sm" role="alert"><%= error.message %></div>
+      <% end %>
+    </div>
+
+  </div>
+
+  <div>
+    <%= form.submit 'Save profile', class: 'border border-gray-700 text-gray-700 hover:bg-gray-700 hover:text-white px-6 py-2 rounded-lg font-medium transition-colors mb-3' %>
+  </div>
+<% end %>
+
+
+
+

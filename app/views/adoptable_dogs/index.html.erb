@@ -1,0 +1,46 @@
+<!--page heading-->
+<header class="py-16" >
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h1 class="text-4xl font-bold uppercase underline">
+          Up for adoption
+        </h1>
+      </div>
+  </div>
+</header>
+
+<!--dog tiles-->
+<section class="pb-16" id="adoptable_dogs">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <% @dogs.each do |dog| %>    
+        <div class="w-full">
+          <%= link_to adoptable_dog_path(dog), class: 'no-underline' do %>
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+              <% if dog.images.attached? %>
+                <%= image_tag dog.images.first, class: 'w-full h-80 object-cover' %>
+              <% else %>
+                <%= image_tag('coming_soon.jpg', class: 'w-full h-80 object-cover') %>
+              <% end %>
+              <div class="p-6">
+                  <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                    <% if dog.has_adoption_pending? %>
+                      <%= dog.name %> (Adoption Pending)
+                    <% else %>
+                      <%= dog.name %>
+                    <% end %>
+                  </h3>
+                <p class="text-lg text-gray-700 mb-2">
+                  Age: <%= "#{dog.age}" " #{dog.age_unit}" %>
+                </p>
+                <p class="text-lg text-gray-700">
+                  Breed: <%= dog.breed %>
+                </p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>

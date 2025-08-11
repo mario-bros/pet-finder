@@ -1,0 +1,15 @@
+<%# Custom message if error is the tos_agreement checkbox %>
+<% if resource.errors[:tos_agreement] %>
+  <% resource.custom_messages(:tos_agreement).each do |error| %>
+    <div class="alert alert-danger mt-1" role="alert"><%= error.message %></div>
+  <% end %>
+<% end %>
+
+<%# default error messages for devise form %>
+<ul>
+  <% resource.errors.full_messages.each do |message| %>
+    <div class="alert alert-danger mt-1" role="alert">
+      <%= message %>
+    </div>
+  <% end %>
+</ul>

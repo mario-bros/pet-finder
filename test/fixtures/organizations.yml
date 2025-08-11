@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: test
+  city: testville
+  country: testistan
+  zipcode: t35t
+
+# default organization for unverified staff, dogs do not belong to this org
+unverified_staff_default:
+  id: 1
+  name: default
+  city: default
+  country: testistan
+  zipcode: t35t

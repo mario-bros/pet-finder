@@ -1,0 +1,20 @@
+<!--page heading-->
+<header class="py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center">
+      <h1 class="text-4xl font-bold uppercase underline">
+        Edit Profile
+      </h1>
+    </div>
+  </div>
+</header>
+
+<!--rendering _form.html.erb--> 
+<section class="pb-16" id="account_select">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mx-auto">
+      <%= render "form", profile: @adopter_profile %>
+      <%= link_to 'Back', profile_path, class: 'text-[#00401F] hover:text-[#668C78] underline' %>
+    </div>
+  </div>
+</section>

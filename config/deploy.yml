@@ -1,0 +1,58 @@
+# Name of your application. Used to uniquely configure containers.
+service: your-app-name
+
+# Name of the container image.
+image: your-registry/your-app-name
+
+# Deploy to these servers.
+servers:
+  web:
+    - your-server-ip
+
+# Credentials for your image host.
+registry:
+  # Specify the registry server, if you're not using Docker Hub
+  # server: registry.digitalocean.com / ghcr.io / ...
+  username: your-username
+
+  # Always use an access token rather than real password when possible.
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+# Inject ENV variables into containers (secrets come from .env).
+env:
+  clear:
+    PORT: 3000
+    RAILS_ENV: production
+  secret:
+    - RAILS_MASTER_KEY
+    - DATABASE_URL
+
+# Configure a custom healthcheck (default is /up on port 3000)
+healthcheck:
+  path: /up
+  port: 3000
+  max_attempts: 7
+
+# Use a persistent volume for the database (if using SQLite)
+# volumes:
+#   - "your-app-storage:/rails/storage"
+
+# Configure the deployment strategy
+deploy:
+  # Deploy using rolling deployment strategy
+  strategy: immediate
+
+# Configure custom commands that run after deploying (optional)
+# hooks:
+#   pre-build:
+#     - docker buildx create --use
+#   pre-deploy:
+#     - docker buildx create --use
+
+# Configure SSHKit for server access
+ssh:
+  # Use specific SSH key (optional)
+  # keys_only: true
+  # keys: ["~/.ssh/id_rsa"]
+  user: deploy

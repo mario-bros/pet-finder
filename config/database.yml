@@ -1,0 +1,23 @@
+# PostgreSQL configuration using Rails per-environment credentials
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  host: <%= Rails.application.credentials.dig(:postgres, :host) || "127.0.0.1" %>
+  port: <%= Rails.application.credentials.dig(:postgres, :port) || 5432 %>
+  username: <%= Rails.application.credentials.dig(:postgres, :username) %>
+  password: <%= Rails.application.credentials.dig(:postgres, :password) %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
+
+development:
+  <<: *default
+  database: <%= Rails.application.credentials.dig(:postgres, :database) || "baja_pet_rescue_development" %>
+
+#test:
+#  <<: *default
+#  database: baja_pet_rescue_test
+
+#production:
+#  <<: *default
+#  database: baja_pet_rescue_production
+#  username: <%#= ENV['database_username'] %>
+#  password: <%#= ENV['database_password'] %>
