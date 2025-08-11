@@ -443,6 +443,7 @@ DEPENDENCIES
   jbuilder
   kamal
   letter_opener
+  logger
   pg (~> 1.1)
   phonelib
   puma (~> 5.0)

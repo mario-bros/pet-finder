@@ -115,3 +115,7 @@ gem "chartkick", "~> 5.0"
 
 # Kamal for deployment
 gem "kamal", require: false
+
+
+# Kamal for deployment
+gem "logger"
