@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   get '/contacts', to: 'contacts#create'
   get '/contacts/new', to: 'contacts#new', as: 'new_contact'
 
+  get '/adoptable_dogs', to: 'adoptable_dogs#index'
+  get '/adoptable_dogs/:id', to: 'adoptable_dogs#show', as: 'adoptable_dog'
+
   devise_for :users, controllers: { registrations: 'registrations', sessions: 'sessions' }
 
   # Add this catch-all route at the very end

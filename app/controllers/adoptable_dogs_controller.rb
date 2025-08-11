@@ -1,5 +1,7 @@
 class AdoptableDogsController < ApplicationController
 
+  before_action :authenticate_user! # Automatically handles redirect
+
   # outer left join on Dog and Adoption
   def index
     @dogs = Dog.where.missing(:adoption)
